@@ -13,6 +13,7 @@ function fetchCurrentData() {
     fetch(weatherQueryString)
     .then(res => res.json())
     .then(function (data){
+        console.log(data)
         var forecast = data.main
         var icon = data.weather[0].icon
         var weatherDate = document.createElement('p')
@@ -22,9 +23,9 @@ function fetchCurrentData() {
         var weatherMinTemp = document.createElement('p')
         var weatherIcon = document.createElement('img')
         var iconURL = "https://openweathermap.org/img/wn/"
-        
-       // weatherDate.textContent = moment().format("dddd, MMMM Do")
-        //weatherDate.classList.add("weather-date")
+        var cityName = document.createElement('h1')
+
+        cityName.textContent = data.name
     
         weatherCurrentTemp.textContent = "Current Temp: " + forecast.temp
         weatherCurrentTemp.classList.add("weather-current-temp");
@@ -43,7 +44,7 @@ function fetchCurrentData() {
         weatherIcon.setAttribute("src" , iconimport+".png")
         weatherIcon.classList.add("weather-icon");
     
-        weatherContainer.append(weatherDate, weatherCurrentTemp, weatherHumidity, weatherMaxTemp, weatherMinTemp)
+        weatherContainer.append(cityName, weatherDate, weatherCurrentTemp, weatherHumidity, weatherMaxTemp, weatherMinTemp)
         weatherContainer.append(weatherIcon);
 
         fetchForecastData();
@@ -75,6 +76,14 @@ function fetchForecastData() {
         var humidity = document.createElement('p')
         humidity.textContent = "Humidity: " + forecast[i].main.humidity + "%"
         forecastContainer.append(humidity)
+
+        var weatherIcon = document.createElement("img")
+        var iconURL = "https://openweathermap.org/img/wn/"
+        var icon = forecast[i].weather[0].icon
+        var iconImport = iconURL.concat(icon)
+        weatherIcon.setAttribute("src", iconImport + ".png" )
+        forecastContainer.append(weatherIcon)
+
     }
     })
 }
