@@ -6,6 +6,8 @@ var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q="
 var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q="
 var apiKey = "126e4065d97fedad97742cdb5c363ca9"
 
+renderLastLocation();
+
 function fetchCurrentData() {
     var locationInput = document.getElementById("location-picker").value
     var weatherQueryString = weatherURL.concat(locationInput) + "&Appid=" + apiKey + "&units=imperial"
@@ -107,6 +109,20 @@ function fetchForecastData() {
         weatherIcon.setAttribute("src", iconImport + ".png" )
         forecastContainer.append(weatherIcon)
 
+        var locationInput = document.getElementById("location-picker").value
+        localStorage.setItem("location", locationInput);
+        renderLastLocation();
+
     }
     })
-}
+};
+
+
+
+function renderLastLocation(){
+    var location = localStorage.getItem("location");
+    var lastLocationSpan = document.getElementById("last-location")
+    lastLocationSpan.textContent = " " + location
+
+};
+
