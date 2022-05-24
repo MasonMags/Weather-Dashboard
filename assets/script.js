@@ -5,12 +5,17 @@ var forecastContainer = document.getElementById("forecast-container")
 var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q="
 var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q="
 var apiKey = "126e4065d97fedad97742cdb5c363ca9"
+let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
+const historyEl = document.getElementById("history");
+const clearEl = document.getElementById("clear-history")
 
-renderLastLocation();
+var locationInput = document.getElementById("location-picker").value
 
-function fetchCurrentData() {
-    var locationInput = document.getElementById("location-picker").value
-    var weatherQueryString = weatherURL.concat(locationInput) + "&Appid=" + apiKey + "&units=imperial"
+//renderLastLocation();
+
+function fetchCurrentData(cityName) {
+    
+    var weatherQueryString = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&Appid=" + apiKey + "&units=imperial"
 
     fetch(weatherQueryString)
     .then(res => res.json())
@@ -69,13 +74,13 @@ function fetchCurrentData() {
         
     })
 
-    fetchForecastData();
+    //fetchForecastData();
 }
 
-function fetchForecastData() {
-    var locationInput = document.getElementById("location-picker").value
-    var weatherQueryString = forecastURL.concat(locationInput) + "&Appid=" + apiKey + "&units=imperial"
-
+function fetchForecastData(cityName) {
+    // var locationInput = document.getElementById("location-picker").value
+    var weatherQueryString = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&Appid=" + apiKey + "&units=imperial"
+    console.log(weatherQueryString)
     fetch(weatherQueryString)
     .then(res => res.json())
     .then(function (data){
@@ -109,20 +114,60 @@ function fetchForecastData() {
         weatherIcon.setAttribute("src", iconImport + ".png" )
         forecastContainer.append(weatherIcon)
 
-        var locationInput = document.getElementById("location-picker").value
-        localStorage.setItem("location", locationInput);
-        renderLastLocation();
+        // var locationInput = document.getElementById("location-picker").value
+        // localStorage.setItem("location", locationInput);
+        // renderLastLocation();
 
     }
     })
 };
 
+function getSearchHistory(){
+    const searchTerm = document.getElementById("location-picker").value
+    fetchCurrentData(searchTerm);
+    fetchForecastData(searchTerm)
+    searchHistory.push(searchTerm);
+    localStorage.setItem("search", JSON.stringify(searchHistory));
+    renderSearchHistory();
+}
+
+clearEl.addEventListener("click", function () {
+    localStorage.clear();
+    searchHistory = [];
+    renderSearchHistory();
+})
+
+function k2f(K) {
+     return Math.floor((K - 273.15) * 1.8 + 32);
+ }
+
+function renderSearchHistory() {
+    historyEl.innerHTML = "";
+    for (let i = 0; i < searchHistory.length; i++) {
+        const historyItem = document.createElement("input");
+        historyItem.setAttribute("type", "text");
+        historyItem.setAttribute("readonly", true);
+        historyItem.setAttribute("class", "form-control d-block bg-white");
+        historyItem.setAttribute("value", searchHistory[i]);
+        historyItem.addEventListener("click", function () {
+            fetchCurrentData(historyItem.value);
+            fetchForecastData(historyItem.value)
+        })
+        historyEl.append(historyItem);
+    }
+}
+
+// renderSearchHistory();
+// if (searchHistory.length > 0) {
+//     fetchCurrentData(searchHistory[searchHistory.length - 1]);
+// }
 
 
-function renderLastLocation(){
-    var location = localStorage.getItem("location");
-    var lastLocationSpan = document.getElementById("last-location")
-    lastLocationSpan.textContent = " " + location
 
-};
+// function renderLastLocation(){
+//     var location = localStorage.getItem("location");
+//     var lastLocationSpan = document.getElementById("last-location")
+//     lastLocationSpan.textContent = " " + location
+
+// };
 

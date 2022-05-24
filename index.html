@@ -19,8 +19,12 @@
         <p>Enter a location:
             <input type="text" id="location-picker">
         </p>
-        <button onclick="fetchCurrentData()" class="submit-btn">Submit</button>
-        <p>Last location:<span id = "last-location"></span></p>
+        <button onclick="getSearchHistory()" class="submit-btn">Submit</button>
+        <button id="clear-history">Clear History</button>
+        <form id = "history">
+
+        </form>
+
     </div>
 
     <div id="forecast-container">
