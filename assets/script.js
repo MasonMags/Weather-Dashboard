@@ -23,9 +23,17 @@ function fetchCurrentData() {
         var weatherIcon = document.createElement('img')
         var iconURL = "https://openweathermap.org/img/wn/"
         var cityName = document.createElement('h1')
-        var uvIndex = document.createElement('p')
+        
 
         cityName.textContent = data.name
+
+        var utcSeconds = data.dt;
+        var forecastDate = new Date(0)
+        forecastDate.setUTCSeconds(utcSeconds);
+        var month = forecastDate.getMonth()
+        var day = forecastDate.getDate()
+        var year = forecastDate.getFullYear()
+        weatherDate.textContent = "(" + month + "/" + day + "/" + year + ")"
     
         weatherCurrentTemp.textContent = "Temperature: " + forecast.temp
         weatherCurrentTemp.classList.add("weather-current-temp");
@@ -41,13 +49,25 @@ function fetchCurrentData() {
         weatherIcon.setAttribute("src" , iconimport+".png")
         weatherIcon.classList.add("weather-icon");
 
-        uvIndex.textContent = "UV: " + forecast.uvi 
-    
-        weatherContainer.append(cityName, weatherDate, weatherCurrentTemp, weatherHumidity, weatherWind, uvIndex)
-        weatherContainer.append(weatherIcon);
+        weatherContainer.append(cityName, weatherDate, weatherCurrentTemp, weatherHumidity, weatherWind)
 
-        fetchForecastData();
+        
+        var lat = data.coord.lat
+        var lon = data.coord.lon
+        var uvURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,daily&appid=${apiKey}`
+        console.log(uvURL)
+        fetch(uvURL)
+        .then(res => res.json())
+        .then(function (data){
+            var uvIndex = document.createElement('p')
+            uvIndex.textContent = "UV: " + data.current.uvi
+            weatherContainer.append(uvIndex, weatherIcon)
+        })
+
+        
     })
+
+    fetchForecastData();
 }
 
 function fetchForecastData() {
