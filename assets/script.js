@@ -19,8 +19,7 @@ function fetchCurrentData() {
         var weatherDate = document.createElement('p')
         var weatherCurrentTemp = document.createElement('p')
         var weatherHumidity = document.createElement('p')
-        var weatherMaxTemp = document.createElement('p')
-        var weatherMinTemp = document.createElement('p')
+        var weatherWind = document.createElement('p')
         var weatherIcon = document.createElement('img')
         var iconURL = "https://openweathermap.org/img/wn/"
         var cityName = document.createElement('h1')
@@ -28,17 +27,14 @@ function fetchCurrentData() {
 
         cityName.textContent = data.name
     
-        weatherCurrentTemp.textContent = "Current Temp: " + forecast.temp
+        weatherCurrentTemp.textContent = "Temperature: " + forecast.temp
         weatherCurrentTemp.classList.add("weather-current-temp");
         
         weatherHumidity.textContent = "Humidity: " + forecast.humidity + "%"
         weatherHumidity.classList.add("weather-humidity");
     
-        weatherMaxTemp.textContent =  "High: " + forecast.temp_max + "° F"
-        weatherMaxTemp.classList.add("weather-max-temp");
-    
-        weatherMinTemp.textContent = "Low: " + forecast.temp_min + "° F"
-        weatherMinTemp.classList.add("weather-min-temp");
+        weatherWind.textContent =  "Wind: " + data.wind.speed + " MPH"
+        weatherWind.classList.add("weather-max-temp");
     
         
         iconimport = iconURL.concat(icon)
@@ -47,7 +43,7 @@ function fetchCurrentData() {
 
         uvIndex.textContent = "UV: " + forecast.uvi 
     
-        weatherContainer.append(cityName, weatherDate, weatherCurrentTemp, weatherHumidity, weatherMaxTemp, weatherMinTemp, uvIndex)
+        weatherContainer.append(cityName, weatherDate, weatherCurrentTemp, weatherHumidity, weatherWind, uvIndex)
         weatherContainer.append(weatherIcon);
 
         fetchForecastData();
@@ -65,7 +61,11 @@ function fetchForecastData() {
         var forecast = data.list
     for (var i = 3; i < forecast.length; i+=8) {
         var date = document.createElement('p')
-        date.textContent = forecast[i].dt_txt
+        var forecastDate = new Date(forecast[i].dt_txt)
+        var month = forecastDate.getMonth()
+        var day = forecastDate.getDate()
+        var year = forecastDate.getFullYear()
+        date.textContent = month + "/" + day + "/" + year 
         forecastContainer.append(date);
 
         var temp = document.createElement('p')
