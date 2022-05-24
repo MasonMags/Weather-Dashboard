@@ -24,13 +24,14 @@ function fetchCurrentData() {
         var weatherIcon = document.createElement('img')
         var iconURL = "https://openweathermap.org/img/wn/"
         var cityName = document.createElement('h1')
+        var uvIndex = document.createElement('p')
 
         cityName.textContent = data.name
     
         weatherCurrentTemp.textContent = "Current Temp: " + forecast.temp
         weatherCurrentTemp.classList.add("weather-current-temp");
         
-        weatherHumidity.textContent = "Humidity: " + forecast.humidity
+        weatherHumidity.textContent = "Humidity: " + forecast.humidity + "%"
         weatherHumidity.classList.add("weather-humidity");
     
         weatherMaxTemp.textContent =  "High: " + forecast.temp_max + "° F"
@@ -43,8 +44,10 @@ function fetchCurrentData() {
         iconimport = iconURL.concat(icon)
         weatherIcon.setAttribute("src" , iconimport+".png")
         weatherIcon.classList.add("weather-icon");
+
+        uvIndex.textContent = "UV: " + forecast.uvi 
     
-        weatherContainer.append(cityName, weatherDate, weatherCurrentTemp, weatherHumidity, weatherMaxTemp, weatherMinTemp)
+        weatherContainer.append(cityName, weatherDate, weatherCurrentTemp, weatherHumidity, weatherMaxTemp, weatherMinTemp, uvIndex)
         weatherContainer.append(weatherIcon);
 
         fetchForecastData();
