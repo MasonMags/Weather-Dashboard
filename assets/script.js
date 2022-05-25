@@ -21,6 +21,7 @@ function fetchCurrentData(cityName) {
     .then(res => res.json())
     .then(function (data){
         console.log(data)
+        weatherContainer.innerHTML=""
         var forecast = data.main
         var icon = data.weather[0].icon
         var weatherDate = document.createElement('p')
@@ -78,7 +79,7 @@ function fetchCurrentData(cityName) {
 }
 
 function fetchForecastData(cityName) {
-    // var locationInput = document.getElementById("location-picker").value
+    forecastContainer.innerHTML=""
     var weatherQueryString = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&Appid=" + apiKey + "&units=imperial"
     console.log(weatherQueryString)
     fetch(weatherQueryString)
@@ -156,7 +157,6 @@ function renderSearchHistory() {
         historyEl.append(historyItem);
     }
 }
-
 // renderSearchHistory();
 // if (searchHistory.length > 0) {
 //     fetchCurrentData(searchHistory[searchHistory.length - 1]);
