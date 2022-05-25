@@ -1,7 +1,8 @@
+// Global variables
 var weatherContainer = document.getElementById("current-weather-container")
 var searchContainer = document.getElementById("search-container")
 var forecastContainer = document.getElementById("forecast-container")
-
+var locationInput = document.getElementById("location-picker").value
 var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q="
 var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q="
 var apiKey = "126e4065d97fedad97742cdb5c363ca9"
@@ -9,9 +10,7 @@ let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 const historyEl = document.getElementById("history");
 const clearEl = document.getElementById("clear-history")
 
-var locationInput = document.getElementById("location-picker").value
-
-
+// Fetches current weather data from API
 function fetchCurrentData(cityName) {
     
     var weatherQueryString = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&Appid=" + apiKey + "&units=imperial"
@@ -31,9 +30,10 @@ function fetchCurrentData(cityName) {
         var iconURL = "https://openweathermap.org/img/wn/"
         var cityName = document.createElement('h1')
         
-
+        //Displays the name of the city
         cityName.textContent = data.name
-
+        
+        // Displays the date in M/DD/YYYY format
         var utcSeconds = data.dt;
         var forecastDate = new Date(0)
         forecastDate.setUTCSeconds(utcSeconds);
@@ -41,24 +41,28 @@ function fetchCurrentData(cityName) {
         var day = forecastDate.getDate()
         var year = forecastDate.getFullYear()
         weatherDate.textContent = "(" + month + "/" + day + "/" + year + ")"
-    
+        
+        // Displays temperature
         weatherCurrentTemp.textContent = "Temperature: " + forecast.temp
         weatherCurrentTemp.classList.add("weather-current-temp");
         
+        // Displays humidity
         weatherHumidity.textContent = "Humidity: " + forecast.humidity + "%"
         weatherHumidity.classList.add("weather-humidity");
     
+        // Displays wind speed
         weatherWind.textContent =  "Wind: " + data.wind.speed + " MPH"
         weatherWind.classList.add("weather-max-temp");
     
-        
+        // Displays corresponding icon
         iconimport = iconURL.concat(icon)
         weatherIcon.setAttribute("src" , iconimport+".png")
         weatherIcon.classList.add("weather-icon");
 
+        // Appends data to the container
         weatherContainer.append(cityName, weatherDate, weatherCurrentTemp, weatherHumidity, weatherWind)
 
-        
+        // Fetches UV index using data from the initial fetch request (latitude and longitude)
         var lat = data.coord.lat
         var lon = data.coord.lon
         var uvURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,daily&appid=${apiKey}`
@@ -75,6 +79,7 @@ function fetchCurrentData(cityName) {
     })
 };
 
+// Fetches five-day weather forecast from API
 function fetchForecastData(cityName) {
     forecastContainer.innerHTML=""
     var weatherQueryString = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&Appid=" + apiKey + "&units=imperial"
@@ -84,7 +89,10 @@ function fetchForecastData(cityName) {
     .then(function (data){
         console.log(data.list)
         var forecast = data.list
+        // Loops through and displays data
     for (var i = 3; i < forecast.length; i+=8) {
+        
+        // Displays each date in M/DD/YYYY format
         var date = document.createElement('p')
         var forecastDate = new Date(forecast[i].dt_txt)
         var month = forecastDate.getMonth()
@@ -93,18 +101,22 @@ function fetchForecastData(cityName) {
         date.textContent = month + "/" + day + "/" + year 
         forecastContainer.append(date);
 
+        // Displays temperature at specified hour
         var temp = document.createElement('p')
         temp.textContent = "Temperature: " + forecast[i].main.temp + "° F"
         forecastContainer.append(temp);
 
+        // Displays wind speed
         var wind = document.createElement('p')
         wind.textContent = "Wind: " + forecast[i].wind.speed + " MPH"
         forecastContainer.append(wind)
 
+        // Displays humidity
         var humidity = document.createElement('p')
         humidity.textContent = "Humidity: " + forecast[i].main.humidity + "%"
         forecastContainer.append(humidity)
 
+        // Displays weather icons
         var weatherIcon = document.createElement("img")
         var iconURL = "https://openweathermap.org/img/wn/"
         var icon = forecast[i].weather[0].icon
@@ -115,6 +127,7 @@ function fetchForecastData(cityName) {
     })
 };
 
+// Gets search history (if any)
 function getSearchHistory(){
     const searchTerm = document.getElementById("location-picker").value
     fetchCurrentData(searchTerm);
@@ -124,6 +137,7 @@ function getSearchHistory(){
     renderSearchHistory();
 }
 
+// Clears search history
 clearEl.addEventListener("click", function () {
     localStorage.clear();
     searchHistory = [];
@@ -134,6 +148,7 @@ function k2f(K) {
      return Math.floor((K - 273.15) * 1.8 + 32);
  }
 
+// Displays search history on page; initializes fetch API functions and passes user input as the parameter
 function renderSearchHistory() {
     historyEl.innerHTML = "";
     for (let i = 0; i < searchHistory.length; i++) {
