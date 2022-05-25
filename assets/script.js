@@ -11,7 +11,6 @@ const clearEl = document.getElementById("clear-history")
 
 var locationInput = document.getElementById("location-picker").value
 
-//renderLastLocation();
 
 function fetchCurrentData(cityName) {
     
@@ -74,9 +73,7 @@ function fetchCurrentData(cityName) {
 
         
     })
-
-    //fetchForecastData();
-}
+};
 
 function fetchForecastData(cityName) {
     forecastContainer.innerHTML=""
@@ -114,11 +111,6 @@ function fetchForecastData(cityName) {
         var iconImport = iconURL.concat(icon)
         weatherIcon.setAttribute("src", iconImport + ".png" )
         forecastContainer.append(weatherIcon)
-
-        // var locationInput = document.getElementById("location-picker").value
-        // localStorage.setItem("location", locationInput);
-        // renderLastLocation();
-
     }
     })
 };
@@ -157,17 +149,4 @@ function renderSearchHistory() {
         historyEl.append(historyItem);
     }
 }
-// renderSearchHistory();
-// if (searchHistory.length > 0) {
-//     fetchCurrentData(searchHistory[searchHistory.length - 1]);
-// }
-
-
-
-// function renderLastLocation(){
-//     var location = localStorage.getItem("location");
-//     var lastLocationSpan = document.getElementById("last-location")
-//     lastLocationSpan.textContent = " " + location
-
-// };
 
