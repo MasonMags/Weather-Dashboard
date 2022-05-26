@@ -1,5 +1,7 @@
 # 06 Server-Side APIs: Weather Dashboard
 
+## URL:  https://masonmags.github.io/Weather-Dashboard/
+
 ## Description
 
 This is a basic web application that allows user to search for a city and receive the current weather as well as a five-day weather forecast. Previous searches will be saved to the user's local storage. All weather data is powered by the OpenWeather One Call API (https://openweathermap.org/api/one-call-api).
