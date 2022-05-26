@@ -18,7 +18,6 @@ function fetchCurrentData(cityName) {
     fetch(weatherQueryString)
     .then(res => res.json())
     .then(function (data){
-        console.log(data)
 
         // Dynamic HTML variables
         var forecast = data.main
@@ -64,7 +63,6 @@ function fetchCurrentData(cityName) {
         var lat = data.coord.lat
         var lon = data.coord.lon
         var uvURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,daily&appid=${apiKey}`
-        console.log(uvURL)
         fetch(uvURL)
         .then(res => res.json())
         .then(function (data){
@@ -82,14 +80,12 @@ function fetchForecastData(cityName) {
     forecastHeader.classList.remove("d-none")
     forecastContainer.innerHTML=""
     var weatherQueryString = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&Appid=" + apiKey + "&units=imperial"
-    console.log(weatherQueryString)
     fetch(weatherQueryString)
     .then(res => res.json())
     .then(function (data){
-        console.log(data.list)
         var forecast = data.list
         // Loops through and displays data
-    for (var i = 3; i < forecast.length; i+=8) {
+    for (var i = 7; i < forecast.length; i+=8) {
 
         var forecastCard = document.createElement('div')
         forecastCard.classList.add("col-md-2", "forecast", "bg-primary", "text-white", "m-2", "rounded")
@@ -101,22 +97,18 @@ function fetchForecastData(cityName) {
         var day = forecastDate.getDate()
         var year = forecastDate.getFullYear()
         date.textContent = month + "/" + day + "/" + year 
-        forecastCard.append(date);
 
         // Displays temperature at specified hour
         var temp = document.createElement('p')
         temp.textContent = "Temperature: " + forecast[i].main.temp + "° F"
-        forecastCard.append(temp);
 
         // Displays wind speed
         var wind = document.createElement('p')
         wind.textContent = "Wind: " + forecast[i].wind.speed + " MPH"
-        forecastCard.append(wind)
 
         // Displays humidity
         var humidity = document.createElement('p')
         humidity.textContent = "Humidity: " + forecast[i].main.humidity + "%"
-        forecastCard.append(humidity)
 
         // Displays weather icons
         var weatherIcon = document.createElement("img")
@@ -124,8 +116,8 @@ function fetchForecastData(cityName) {
         var icon = forecast[i].weather[0].icon
         var iconImport = iconURL.concat(icon)
         weatherIcon.setAttribute("src", iconImport + ".png" )
-        forecastCard.append(weatherIcon)
 
+        forecastCard.append(date, temp, wind, humidity, weatherIcon)
         forecastContainer.append(forecastCard)
 
     }
