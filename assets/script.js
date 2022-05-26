@@ -32,6 +32,7 @@ function fetchCurrentData(cityName) {
         
         //Displays the name of the city
         cityName.textContent = data.name
+        cityName.classList.add("city-name", "align-middle")
         
         // Displays the date in M/DD/YYYY format
         var utcSeconds = data.dt;
@@ -44,20 +45,20 @@ function fetchCurrentData(cityName) {
         
         // Displays temperature
         weatherCurrentTemp.textContent = "Temperature: " + forecast.temp
-        weatherCurrentTemp.classList.add("weather-current-temp");
+        //weatherCurrentTemp.classList.add("weather-current-temp");
         
         // Displays humidity
         weatherHumidity.textContent = "Humidity: " + forecast.humidity + "%"
-        weatherHumidity.classList.add("weather-humidity");
+        //weatherHumidity.classList.add("weather-humidity");
     
         // Displays wind speed
         weatherWind.textContent =  "Wind: " + data.wind.speed + " MPH"
-        weatherWind.classList.add("weather-max-temp");
+       // weatherWind.classList.add("weather-max-temp");
     
         // Displays corresponding icon
         iconimport = iconURL.concat(icon)
         weatherIcon.setAttribute("src" , iconimport+".png")
-        weatherIcon.classList.add("weather-icon");
+        //weatherIcon.classList.add("weather-icon");
 
         // Appends data to the container
         weatherContainer.append(cityName, weatherDate, weatherCurrentTemp, weatherHumidity, weatherWind)
@@ -91,6 +92,9 @@ function fetchForecastData(cityName) {
         var forecast = data.list
         // Loops through and displays data
     for (var i = 3; i < forecast.length; i+=8) {
+
+        var forecastCard = document.createElement('div')
+        forecastCard.classList.add("col-md-2", "forecast", "bg-primary", "text-white", "m-2", "rounded")
         
         // Displays each date in M/DD/YYYY format
         var date = document.createElement('p')
@@ -99,22 +103,22 @@ function fetchForecastData(cityName) {
         var day = forecastDate.getDate()
         var year = forecastDate.getFullYear()
         date.textContent = month + "/" + day + "/" + year 
-        forecastContainer.append(date);
+        forecastCard.append(date);
 
         // Displays temperature at specified hour
         var temp = document.createElement('p')
         temp.textContent = "Temperature: " + forecast[i].main.temp + "° F"
-        forecastContainer.append(temp);
+        forecastCard.append(temp);
 
         // Displays wind speed
         var wind = document.createElement('p')
         wind.textContent = "Wind: " + forecast[i].wind.speed + " MPH"
-        forecastContainer.append(wind)
+        forecastCard.append(wind)
 
         // Displays humidity
         var humidity = document.createElement('p')
         humidity.textContent = "Humidity: " + forecast[i].main.humidity + "%"
-        forecastContainer.append(humidity)
+        forecastCard.append(humidity)
 
         // Displays weather icons
         var weatherIcon = document.createElement("img")
@@ -122,7 +126,12 @@ function fetchForecastData(cityName) {
         var icon = forecast[i].weather[0].icon
         var iconImport = iconURL.concat(icon)
         weatherIcon.setAttribute("src", iconImport + ".png" )
-        forecastContainer.append(weatherIcon)
+        forecastCard.append(weatherIcon)
+
+        forecastContainer.append(forecastCard)
+
+        // forecastContainer.classList.add("col-md-2", "forecast", "bg-primary", "text-white", "m-2", "rounded")
+
     }
     })
 };
