@@ -3,8 +3,8 @@ var weatherContainer = document.getElementById("current-weather-container")
 var searchContainer = document.getElementById("search-container")
 var forecastContainer = document.getElementById("forecast-container")
 var locationInput = document.getElementById("location-picker").value
-var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q="
-var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q="
+var weatherHeader = document.getElementById("current-weather-header")
+var forecastHeader = document.getElementById("forecast-header")
 var apiKey = "126e4065d97fedad97742cdb5c363ca9"
 let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 const historyEl = document.getElementById("history");
@@ -12,14 +12,15 @@ const clearEl = document.getElementById("clear-history")
 
 // Fetches current weather data from API
 function fetchCurrentData(cityName) {
-    
+    weatherHeader.classList.remove("d-none")
+    weatherContainer.innerHTML=""
     var weatherQueryString = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&Appid=" + apiKey + "&units=imperial"
-
     fetch(weatherQueryString)
     .then(res => res.json())
     .then(function (data){
         console.log(data)
-        weatherContainer.innerHTML=""
+
+        // Dynamic HTML variables
         var forecast = data.main
         var icon = data.weather[0].icon
         var weatherDate = document.createElement('p')
@@ -78,6 +79,7 @@ function fetchCurrentData(cityName) {
 
 // Fetches five-day weather forecast from API
 function fetchForecastData(cityName) {
+    forecastHeader.classList.remove("d-none")
     forecastContainer.innerHTML=""
     var weatherQueryString = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&Appid=" + apiKey + "&units=imperial"
     console.log(weatherQueryString)
