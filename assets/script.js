@@ -69,6 +69,16 @@ function fetchCurrentData(cityName) {
             var uvIndex = document.createElement('p')
             uvIndex.textContent = "UV: " + data.current.uvi
             weatherContainer.append(uvIndex, weatherIcon)
+
+            if (data.current.uvi < 4){
+                uvIndex.classList.add("badge", "badge-success")
+            } 
+            else if (data.current.uvi < 8){
+                uvIndex.classList.add("badge", "badge-warning")
+            }
+            else {
+                uvIndex.classList.add("badge", "badge-danger")
+            }
         })
 
         
