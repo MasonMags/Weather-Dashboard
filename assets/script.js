@@ -45,20 +45,16 @@ function fetchCurrentData(cityName) {
         
         // Displays temperature
         weatherCurrentTemp.textContent = "Temperature: " + forecast.temp
-        //weatherCurrentTemp.classList.add("weather-current-temp");
         
         // Displays humidity
         weatherHumidity.textContent = "Humidity: " + forecast.humidity + "%"
-        //weatherHumidity.classList.add("weather-humidity");
     
         // Displays wind speed
         weatherWind.textContent =  "Wind: " + data.wind.speed + " MPH"
-       // weatherWind.classList.add("weather-max-temp");
     
         // Displays corresponding icon
         iconimport = iconURL.concat(icon)
         weatherIcon.setAttribute("src" , iconimport+".png")
-        //weatherIcon.classList.add("weather-icon");
 
         // Appends data to the container
         weatherContainer.append(cityName, weatherDate, weatherCurrentTemp, weatherHumidity, weatherWind)
@@ -129,8 +125,6 @@ function fetchForecastData(cityName) {
         forecastCard.append(weatherIcon)
 
         forecastContainer.append(forecastCard)
-
-        // forecastContainer.classList.add("col-md-2", "forecast", "bg-primary", "text-white", "m-2", "rounded")
 
     }
     })
